@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Οικονομικές Καταστάσεις — CRETECO Μονοπρόσωπη Ι.Κ.Ε.</title>
+<meta name="description" content="Ετήσιες οικονομικές καταστάσεις της CRETECO Μονοπρόσωπη Ι.Κ.Ε.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=GFS+Didot&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="index.html">CRETECO<span class="ke"> Ι.Κ.Ε.</span></a>
+    <nav>
+      <ul>
+        <li><a href="index.html#etaireia">Η Εταιρεία</a></li>
+        <li><a href="index.html#stoixeia">Εταιρικά Στοιχεία</a></li>
+        <li><a href="eggrafa.html">Έγγραφα</a></li>
+        <li><a href="index.html#epikoinonia">Επικοινωνία</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="block">
+  <div class="wrap">
+    <a class="backlink" href="eggrafa.html">← Πίσω στα Έγγραφα</a>
+    <div class="kicker">Δημοσιότητα · Άρθρο 98 §2 ν. 4072/2012</div>
+    <h2>Οικονομικές Καταστάσεις</h2>
+    <p>Ετήσιες χρηματοοικονομικές καταστάσεις της εταιρείας.</p>
+
+    <!-- Συμπληρώνεται αυτόματα από τα PDF του φακέλου docs/oikonomikes-katastaseis/.
+         Σύμβαση ονοματοδοσίας: oikonomikes-YYYY.pdf  → "Οικονομικές καταστάσεις χρήσης YYYY".
+         Όσο ο φάκελος είναι κενός, εμφανίζεται το παρακάτω μήνυμα. -->
+    <div class="docs" id="oikonomikes-list">
+      <span class="doc pending">
+        <span class="tag">Ετήσια</span>
+        <span class="name">Καμία δημοσίευση ακόμη</span>
+        <span class="meta">Αναμένονται μετά τη λήξη της πρώτης χρήσης (31/12/2026)</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="top">
+      <div class="fmark">CRETECO<span class="ke"> Ι.Κ.Ε.</span></div>
+      <div class="legal">
+        <strong>CRETECO Μονοπρόσωπη Ι.Κ.Ε.</strong><br>
+        Αρ. Γ.Ε.ΜΗ.: 193412558000 &nbsp;·&nbsp; Α.Φ.Μ.: 803266958 &nbsp;·&nbsp; Δ.Ο.Υ. Χανίων<br>
+        Έδρα: Αγία Μαρίνα, Τ.Κ. 73014, Χανιά &nbsp;·&nbsp; <a href="index.html">www.creteco.gr</a><br>
+        Διαχειριστής / Εταίρος: Λάμπρος Φωτιάδης του Χρήστου &nbsp;·&nbsp; Δεν τελεί υπό εκκαθάριση
+      </div>
+    </div>
+    <div class="divline"></div>
+    <div class="fine">
+      <span>© 2026 CRETECO Μονοπρόσωπη Ι.Κ.Ε.</span>
+      <span>Στοιχεία δημοσιευμένα κατ’ άρθρο 47 ν. 4072/2012.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var repo = "lcfgr/creteco";
+  var path = "docs/oikonomikes-katastaseis";
+  var list = document.getElementById("oikonomikes-list");
+
+  function yearFrom(name){ var m = name.match(/(20\d{2})/); return m ? m[1] : ""; }
+
+  fetch("https://api.github.com/repos/" + repo + "/contents/" + path)
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(files){
+      var pdfs = files
+        .filter(function(f){ return f.type === "file" && /\.pdf$/i.test(f.name); })
+        .sort(function(a,b){ return b.name.localeCompare(a.name); }); // newest year first
+      if (!pdfs.length) return; // keep empty-state
+      list.innerHTML = pdfs.map(function(f){
+        var y = yearFrom(f.name);
+        return '<a class="doc pdf" href="' + path + '/' + encodeURIComponent(f.name) + '">'
+             +   '<span class="tag">Ετήσια</span>'
+             +   '<span class="name">Οικονομικές καταστάσεις' + (y ? " χρήσης " + y : "") + '</span>'
+             +   '<span class="meta">' + f.name + '</span>'
+             + '</a>';
+      }).join("");
+    })
+    .catch(function(){ /* keep empty-state */ });
+})();
+</script>
+
+</body>
+</html>

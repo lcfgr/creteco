@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Καταστατικό και Τροποποιήσεις — CRETECO Μονοπρόσωπη Ι.Κ.Ε.</title>
+<meta name="description" content="Καταστατικό σύστασης και τροποποιήσεις της CRETECO Μονοπρόσωπη Ι.Κ.Ε.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=GFS+Didot&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site">
+  <div class="wrap bar">
+    <a class="mark" href="index.html">CRETECO<span class="ke"> Ι.Κ.Ε.</span></a>
+    <nav>
+      <ul>
+        <li><a href="index.html#etaireia">Η Εταιρεία</a></li>
+        <li><a href="index.html#stoixeia">Εταιρικά Στοιχεία</a></li>
+        <li><a href="eggrafa.html">Έγγραφα</a></li>
+        <li><a href="index.html#epikoinonia">Επικοινωνία</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== ΚΑΤΑΣΤΑΤΙΚΟ & ΤΡΟΠΟΠΟΙΗΣΕΙΣ ===================== -->
+<section class="block">
+  <div class="wrap">
+    <a class="backlink" href="eggrafa.html">← Πίσω στα Έγγραφα</a>
+    <div class="kicker">Δημοσιότητα · Άρθρο 47 ν. 4072/2012</div>
+    <h2>Καταστατικό και Τροποποιήσεις</h2>
+    <p>Το ισχύον καταστατικό σύστασης και οι τυχόν μεταγενέστερες τροποποιήσεις του.</p>
+
+    <!-- Η λίστα συμπληρώνεται αυτόματα από τα PDF του φακέλου docs/katastatika/
+         (μέσω του GitHub API). Σύμβαση ονοματοδοσίας αρχείων:
+            katastatiko-YYYY-MM-DD.pdf   → "Καταστατικό σύστασης"
+            tropopoiisi-YYYY-MM-DD.pdf   → "Τροποποίηση καταστατικού"
+         Η παρακάτω στατική κάρτα είναι το fallback (εμφανίζεται πάντα). -->
+    <div class="docs" id="katastatika-list">
+      <a class="doc pdf" href="docs/katastatika/katastatiko-2026-04-29.pdf">
+        <span class="tag">Σύσταση</span>
+        <span class="name">Καταστατικό σύστασης</span>
+        <span class="meta">29/04/2026</span>
+      </a>
+    </div>
+    <p class="docnote" id="katastatika-note"></p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="top">
+      <div class="fmark">CRETECO<span class="ke"> Ι.Κ.Ε.</span></div>
+      <div class="legal">
+        <strong>CRETECO Μονοπρόσωπη Ι.Κ.Ε.</strong><br>
+        Αρ. Γ.Ε.ΜΗ.: 193412558000 &nbsp;·&nbsp; Α.Φ.Μ.: 803266958 &nbsp;·&nbsp; Δ.Ο.Υ. Χανίων<br>
+        Έδρα: Αγία Μαρίνα, Τ.Κ. 73014, Χανιά &nbsp;·&nbsp; <a href="index.html">www.creteco.gr</a><br>
+        Διαχειριστής / Εταίρος: Λάμπρος Φωτιάδης του Χρήστου &nbsp;·&nbsp; Δεν τελεί υπό εκκαθάριση
+      </div>
+    </div>
+    <div class="divline"></div>
+    <div class="fine">
+      <span>© 2026 CRETECO Μονοπρόσωπη Ι.Κ.Ε.</span>
+      <span>Στοιχεία δημοσιευμένα κατ’ άρθρο 47 ν. 4072/2012.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var repo = "lcfgr/creteco";          // ← repository
+  var path = "docs/katastatika";       // ← folder to list
+  var list = document.getElementById("katastatika-list");
+  var note = document.getElementById("katastatika-note");
+
+  function fmtDate(name){
+    var m = name.match(/(\d{4})-(\d{2})-(\d{2})/);
+    return m ? (m[3] + "/" + m[2] + "/" + m[1]) : "";
+  }
+  function labelFor(name){
+    var n = name.toLowerCase();
+    if (n.indexOf("tropop") > -1) return "Τροποποίηση καταστατικού";
+    if (n.indexOf("katastatiko") > -1) return "Καταστατικό σύστασης";
+    return name.replace(/\.pdf$/i, "");
+  }
+  function tagFor(name){
+    return name.toLowerCase().indexOf("tropop") > -1 ? "Τροποποίηση" : "Σύσταση";
+  }
+
+  fetch("https://api.github.com/repos/" + repo + "/contents/" + path)
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(files){
+      var pdfs = files
+        .filter(function(f){ return f.type === "file" && /\.pdf$/i.test(f.name); })
+        .sort(function(a,b){ return a.name.localeCompare(b.name); });
+      if (!pdfs.length) return; // keep the static fallback
+      list.innerHTML = pdfs.map(function(f){
+        var d = fmtDate(f.name);
+        return '<a class="doc pdf" href="' + path + '/' + encodeURIComponent(f.name) + '">'
+             +   '<span class="tag">' + tagFor(f.name) + '</span>'
+             +   '<span class="name">' + labelFor(f.name) + '</span>'
+             +   '<span class="meta">' + (d || f.name) + '</span>'
+             + '</a>';
+      }).join("");
+    })
+    .catch(function(){
+      // Listing unavailable (private repo / offline / rate limit) — fallback card stays.
+    });
+})();
+</script>
+
+</body>
+</html>

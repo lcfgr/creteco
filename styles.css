@@ -1,0 +1,143 @@
+:root{
+  --paper:#f4f1ea;
+  --paper-2:#efe9dd;
+  --ink:#1b2024;
+  --ink-soft:#4c5258;
+  --ink-faint:#7a8086;
+  --accent:#175767;
+  --accent-deep:#103d49;
+  --gold:#b08a3e;
+  --line:rgba(27,32,36,.14);
+  --line-soft:rgba(27,32,36,.08);
+  --display:"GFS Didot","Times New Roman",serif;
+  --body:"Alegreya Sans",system-ui,-apple-system,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:18px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body::before{ /* subtle paper grain */
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:radial-gradient(rgba(27,32,36,.025) 1px,transparent 1px);
+  background-size:3px 3px;
+}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-deep)}
+
+.wrap{max-width:980px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* ---------- Header / nav ---------- */
+header.site{
+  position:sticky;top:0;z-index:10;
+  background:rgba(244,241,234,.86);
+  backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--line-soft);
+}
+.bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mark{
+  font-family:var(--display);font-size:22px;letter-spacing:.5px;color:var(--ink);
+}
+.mark .ke{color:var(--accent)}
+nav ul{display:flex;gap:26px;list-style:none}
+nav a{
+  font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+  font-weight:500;padding:6px 0;border-bottom:1px solid transparent;transition:.2s;
+}
+nav a:hover{color:var(--ink);border-bottom-color:var(--gold)}
+
+/* ---------- Hero ---------- */
+.hero{padding:96px 0 72px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+  font-weight:700;margin-bottom:22px;opacity:0;animation:rise .8s .05s forwards}
+.hero h1{
+  font-family:var(--display);font-weight:400;line-height:1.04;
+  font-size:clamp(40px,8vw,84px);letter-spacing:.5px;color:var(--ink);
+  opacity:0;animation:rise .9s .15s forwards}
+.hero h1 .form{display:block;font-size:.40em;letter-spacing:.05em;color:var(--ink-soft);margin-top:14px;font-family:var(--body);font-weight:500}
+.hero p.lead{
+  margin-top:30px;max-width:60ch;font-size:20px;color:var(--ink-soft);
+  opacity:0;animation:rise .9s .3s forwards}
+.rule{width:64px;height:2px;background:var(--gold);margin:34px 0 0;opacity:0;animation:rise .9s .4s forwards}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ---------- Sections ---------- */
+section.block{padding:72px 0;border-bottom:1px solid var(--line)}
+.kicker{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,4.5vw,40px);color:var(--ink);margin-bottom:20px;letter-spacing:.4px}
+section.block p{max-width:66ch;color:var(--ink-soft);margin-bottom:14px}
+
+/* ---------- Εταιρικά Στοιχεία (compliance block) ---------- */
+.facts{
+  margin-top:26px;background:var(--paper-2);
+  border:1px solid var(--line);border-radius:4px;overflow:hidden;
+}
+.facts .row{
+  display:grid;grid-template-columns:240px 1fr;gap:8px 28px;
+  padding:18px 26px;border-bottom:1px solid var(--line-soft);align-items:baseline;
+}
+.facts .row:last-child{border-bottom:none}
+.facts dt{font-weight:700;color:var(--ink);font-size:15px;letter-spacing:.02em}
+.facts dd{color:var(--ink-soft);font-size:17px}
+.partners{list-style:none}
+.partners li{padding:6px 0;border-bottom:1px dotted var(--line);}
+.partners li:last-child{border-bottom:none}
+
+/* ---------- Έγγραφα ---------- */
+.docgroup{margin-top:34px}
+.docgroup:first-of-type{margin-top:28px}
+.docgroup > h3{
+  font-family:var(--body);font-size:14px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-deep);font-weight:700;margin-bottom:14px;
+  padding-bottom:8px;border-bottom:1px solid var(--line-soft)}
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.doc{
+  display:block;padding:24px 24px 26px;background:#fff;border:1px solid var(--line);
+  border-radius:4px;transition:.2s;position:relative;
+}
+.doc:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(16,61,73,.10);border-color:var(--accent)}
+.doc .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.doc .name{display:block;font-family:var(--display);font-size:23px;color:var(--ink);margin:10px 0 4px}
+.doc .meta{font-size:14px;color:var(--ink-faint)}
+.doc[href]::after{content:"→";position:absolute;right:22px;bottom:24px;font-size:13px;color:var(--accent);font-weight:700}
+.doc.pdf[href]::after{content:"→ PDF"}
+
+/* ---------- Subpage extras ---------- */
+.backlink{display:inline-block;margin-bottom:18px;font-size:14px;letter-spacing:.04em;color:var(--accent);font-weight:600}
+.backlink:hover{color:var(--accent-deep)}
+.docnote{color:var(--ink-faint);font-style:italic;margin-top:18px;font-size:15px}
+
+/* ---------- Footer (mandatory disclosure) ---------- */
+footer.site{background:var(--ink);color:#cfd3d6;padding:56px 0 40px;position:relative;z-index:1}
+footer .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;align-items:flex-start}
+footer .fmark{font-family:var(--display);font-size:26px;color:#fff;letter-spacing:.5px}
+footer .fmark .ke{color:var(--gold)}
+footer .legal{font-size:14.5px;line-height:1.85;max-width:62ch;color:#aeb4b9}
+footer .legal strong{color:#fff;font-weight:700}
+footer .legal a{color:#cfd3d6}
+footer .divline{height:1px;background:rgba(255,255,255,.12);margin:34px 0 22px}
+footer .fine{font-size:12.5px;color:#7f868c;display:flex;flex-wrap:wrap;gap:6px 18px}
+
+/* ---------- Responsive ---------- */
+@media(max-width:680px){
+  body{font-size:17px}
+  nav ul{gap:16px}
+  nav a{font-size:12px}
+  .facts .row{grid-template-columns:1fr;gap:4px;padding:16px 18px}
+  .facts dt{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-deep)}
+  .hero{padding:64px 0 52px}
+  section.block{padding:56px 0}
+}
+@media(max-width:520px){
+  nav ul{display:none}
+}
